@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
-import { TiDelete } from 'react-icons/ti';
 import { AppContext } from '../context/AppContext';
 
 const ExpenseItem = (props) => {
-    const { dispatch } = useContext(AppContext);
+    const { currency, dispatch } = useContext(AppContext);
 
     const handleDeleteExpense = () => {
         dispatch({
@@ -20,17 +19,54 @@ const ExpenseItem = (props) => {
 
         dispatch({
             type: 'ADD_EXPENSE',
-            payload: expense
+            payload: expense,
         });
+    };
 
-    }
+    const decreaseAllocation = (name) => {
+        const expense = {
+            name: name,
+            cost: 10,
+        };
+
+        dispatch({
+            type: 'RED_EXPENSE',
+            payload: expense,
+        });
+    };
 
     return (
         <tr>
-        <td>{props.name}</td>
-        <td>£{props.cost}</td>
-        <td><button onClick={event=> increaseAllocation(props.name)}>+</button></td>
-        <td><TiDelete size='1.5em' onClick={handleDeleteExpense}></TiDelete></td>
+            <td>{props.name}</td>
+            <td>{currency}{props.cost}</td>
+            <td>
+                <button
+                    className="btn btn-primary btn-success"
+                    style={{ borderRadius: '50%' }}
+                    onClick={(event) => increaseAllocation(props.name)}
+                >
+                    <i className="bi bi-plus"></i>
+                </button>
+            </td>
+            <td>
+                <button
+                    className="btn btn-primary btn-danger"
+                    style={{ borderRadius: '50%' }}
+                    onClick={(event) => decreaseAllocation(props.name)}
+                >
+                    <i className="bi bi-dash"></i>
+                </button>
+            </td>
+            <td>
+                <button
+                    className="btn btn-primary btn-danger"
+                    style={{ borderRadius: '50%' }}
+                    size="1.5em"
+                    onClick={handleDeleteExpense}
+                >
+                    <i className="bi bi-x"></i>
+                </button>
+            </td>
         </tr>
     );
 };
